@@ -32,7 +32,6 @@ regd_users.post("/login", (req,res) => {
   } else {
       return res.status(400).json({message: "Invalid credentials"});
   }
-   
 });
 
 // Add a book review
@@ -72,7 +71,6 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
         return res.status(400).json({message: "Token missing"});
     }
   }
-  
 });
 
 

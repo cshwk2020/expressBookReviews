@@ -5,7 +5,7 @@ let users = require("./auth_users.js").users;
 const public_users = express.Router();
 const axios = require('axios').default;
 
-const BOOK_URL = "http://localhost:5000";
+const BOOK_URL = "http://localhost:5000/books";
 
 public_users.post("/register", (req,res) => {
   //Write your code here
@@ -26,29 +26,49 @@ public_users.post("/register", (req,res) => {
 });
 
 // Get the book list available in the shop
+// Task 1
 public_users.get('/',function (req, res) {
   //Write your code here
   console.log('get_books...');
   console.log(books);
-  return res.status(200).json(books); 
+  //return res.status(200).json(books, null, 4); 
+  res.setHeader('Content-Type','application/json');
+  res.send(JSON.stringify(books));
+});
+
+
+// Task 10
+public_users.get('/books',async function (req, res) {
+  try {
+    const books = (await axios.get("http://localhost:5000")).data;
+    console.log("books==>",books);
+
+    return res.status(200).json(books);
+
+  } catch (err) {
+    return res.status(500).json({message: err});
+  }
 });
 
  
 // Get book details based on ISBN
-// Task 1
+// Task 2
 /*
 public_users.get('/isbn/:isbn',function (req, res) {
   //Write your code here
   const key = req.params.isbn;
   if (key in books) {
     return res.status(200).json(books[key]);
+    // res.setHeader('Content-Type','application/json');
+    // res.send(JSON.stringify(books[key]));
   } else {
     return res.status(404).json({message: "book not found"});
   }
  });
  */
+ 
 
- // Task 1 -> 10
+ // Task 2 -> 11
 public_users.get('/isbn/:isbn', async function (req, res) {
   //Write your code here
   console.log("get isbn...");
@@ -59,6 +79,8 @@ public_users.get('/isbn/:isbn', async function (req, res) {
     const key = req.params.isbn;
     if (key in books) {
       return res.status(200).json(books[key]);
+      // res.setHeader('Content-Type','application/json');
+      // res.send(JSON.stringify(books[key]));
     } else {
       return res.status(404).json({message: "book not found"});
     }
@@ -71,7 +93,7 @@ public_users.get('/isbn/:isbn', async function (req, res) {
 
   
 // Get book details based on author
-// Task 2
+// Task 3
 /*
 public_users.get('/author/:author',function (req, res) {
   //Write your code here
@@ -82,7 +104,7 @@ public_users.get('/author/:author',function (req, res) {
 });
 */
 
-// Task 2 -> 11
+// Task 3 -> 12
 public_users.get('/author/:author',async function (req, res) {
   //Write your code here
   try {
@@ -99,7 +121,7 @@ public_users.get('/author/:author',async function (req, res) {
 
 
 // Get all books based on title
-// Task 3
+// Task 4
 /*
 public_users.get('/title/:title',function (req, res) {
   //Write your code here
@@ -110,7 +132,7 @@ public_users.get('/title/:title',function (req, res) {
 });
 */
 
-// Task 3 -> 12
+// Task 4 -> 13
 public_users.get('/title/:title', async function (req, res) {
   //Write your code here
    
@@ -127,8 +149,8 @@ public_users.get('/title/:title', async function (req, res) {
 });
 
 //  Get book review
-//  Task 4
-/*
+//  Task 5
+ 
 public_users.get('/review/:isbn',function (req, res) {
   //Write your code here
   const key = req.params.isbn;
@@ -140,12 +162,12 @@ public_users.get('/review/:isbn',function (req, res) {
   }
   
 });
-*/
-
+ 
 
 
 //  Get book review
-//  Task 4 -> 13
+//  Task 5 -> 5
+/*
 public_users.get('/review/:isbn', async function (req, res) {
   //Write your code here
   try {
@@ -164,5 +186,6 @@ public_users.get('/review/:isbn', async function (req, res) {
   }
 
 });
+*/
 
 module.exports.general = public_users;
